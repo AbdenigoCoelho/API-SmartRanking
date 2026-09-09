@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { JogadoresModule } from './jogadores/jogadores.module';
-import { JogadoresController } from './jogadores/jogadores.controller';
-import { JogadoresService } from './jogadores/jogadores.service';
 
 @Module({
-  imports: [JogadoresModule],
-  controllers: [JogadoresController],
-  providers: [JogadoresService],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/smartranking'),
+    JogadoresModule,
+  ],
 })
 export class AppModule {}
