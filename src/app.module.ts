@@ -1,10 +1,20 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JogadoresModule } from './jogadores/jogadores.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/smartranking'),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGODB_URI'),
+      }),
+    }),
     JogadoresModule,
   ],
 })
